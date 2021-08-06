@@ -373,12 +373,12 @@
   <property name="mesa0c1pin7" type="string" value="machine-is-enabled"/>
   <property name="mesa0c1pin7inv" type="bool" value="True"/>
   <property name="mesa0c1pin7type" type="string" value="GPIO Output"/>
-  <property name="mesa0c1pin8" type="string" value="machine-is-enabled"/>
-  <property name="mesa0c1pin8inv" type="bool" value="True"/>
-  <property name="mesa0c1pin8type" type="string" value="GPIO Output"/>
-  <property name="mesa0c1pin9" type="string" value="unused-input"/>
-  <property name="mesa0c1pin9inv" type="bool" value="False"/>
-  <property name="mesa0c1pin9type" type="string" value="GPIO Input"/>
+  <property name="mesa0c1pin8" type="string" value="unused-input"/>
+  <property name="mesa0c1pin8inv" type="bool" value="False"/>
+  <property name="mesa0c1pin8type" type="string" value="GPIO Input"/>
+  <property name="mesa0c1pin9" type="string" value="machine-is-enabled"/>
+  <property name="mesa0c1pin9inv" type="bool" value="True"/>
+  <property name="mesa0c1pin9type" type="string" value="GPIO Output"/>
   <property name="mesa0c2pin0" type="string" value="unused-input"/>
   <property name="mesa0c2pin0inv" type="bool" value="False"/>
   <property name="mesa0c2pin0type" type="string" value="GPIO Input"/>

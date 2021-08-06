@@ -69,4 +69,5 @@ tool_in_spindle = 0
 offset_axis_x = 0.0
 offset_axis_y = 0.0
 offset_axis_z = 0.0
+hide_tooltips = False
 
