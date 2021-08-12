@@ -4268,7 +4268,7 @@
   <property name="xoutputscale" type="float" value="10.0"/>
   <property name="xsearchdir" type="int" value="0"/>
   <property name="xsteprev" type="float" value="200.0"/>
-  <property name="xstepscale" type="float" value="8000.0"/>
+  <property name="xstepscale" type="float" value="32000.0"/>
   <property name="xstepspace" type="float" value="5000.0"/>
   <property name="xsteptime" type="float" value="5000.0"/>
   <property name="xusebacklash" type="bool" value="False"/>
@@ -4362,7 +4362,7 @@
   <property name="youtputscale" type="float" value="10.0"/>
   <property name="ysearchdir" type="int" value="0"/>
   <property name="ysteprev" type="float" value="200.0"/>
-  <property name="ystepscale" type="float" value="8000.0"/>
+  <property name="ystepscale" type="float" value="32000.0"/>
   <property name="ystepspace" type="float" value="5000.0"/>
   <property name="ysteptime" type="float" value="5000.0"/>
   <property name="yusebacklash" type="bool" value="False"/>
@@ -4460,7 +4460,7 @@
   <property name="zoutputscale" type="float" value="10.0"/>
   <property name="zsearchdir" type="int" value="0"/>
   <property name="zsteprev" type="float" value="200.0"/>
-  <property name="zstepscale" type="float" value="5333.333"/>
+  <property name="zstepscale" type="float" value="21333.333"/>
   <property name="zstepspace" type="float" value="5000.0"/>
   <property name="zsteptime" type="float" value="5000.0"/>
   <property name="zusebacklash" type="bool" value="False"/>
