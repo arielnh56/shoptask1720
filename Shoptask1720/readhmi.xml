@@ -1,0 +1,351 @@
+<?xml version="1.0"?>
+<hostmot2>
+    <boardname>MESA7I76</boardname>
+    <ioports>3</ioports>
+    <iowidth>51</iowidth>
+    <portwidth>17</portwidth>
+    <clocklow>100000000</clocklow>
+    <clockhigh>200000000</clockhigh>
+    <modules>
+        <module>
+            <tagname>DPLL</tagname>
+            <numinstances> 1</numinstances>
+        </module>
+        <module>
+            <tagname>Watchdog</tagname>
+            <numinstances> 1</numinstances>
+        </module>
+        <module>
+            <tagname>IOPort</tagname>
+            <numinstances> 3</numinstances>
+        </module>
+        <module>
+            <tagname>StepGen</tagname>
+            <numinstances> 5</numinstances>
+        </module>
+        <module>
+            <tagname>MuxedQCount</tagname>
+            <numinstances> 6</numinstances>
+        </module>
+        <module>
+            <tagname>MuxedQCountSel</tagname>
+            <numinstances> 1</numinstances>
+        </module>
+        <module>
+            <tagname>SSerial</tagname>
+            <numinstances> 1</numinstances>
+        </module>
+        <module>
+            <tagname>LED</tagname>
+            <numinstances> 1</numinstances>
+        </module>
+    </modules>
+    <pins>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Dir/Table2 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 4,5           </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Step/Table1 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 2,3           </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Dir/Table2 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 10,11         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Step/Table1 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 8,9           </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Dir/Table2 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 16,17         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Step/Table1 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 14,15         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Dir/Table2 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 22,23         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Step/Table1 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB2 20,21         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Dir/Table2 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB3 4,5           </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>StepGen</secondarymodulename>
+            <secondaryfunctionname>Step/Table1 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB3 2,3           </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData0 (Out)</secondaryfunctionname>
+            <secondaryinstance>Internal          </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData0 (In)</secondaryfunctionname>
+            <secondaryinstance>Internal          </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData1 (Out)</secondaryfunctionname>
+            <secondaryinstance>TB3 18,19         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData1 (In)</secondaryfunctionname>
+            <secondaryinstance>TB3 16,17         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Index (In)</secondaryfunctionname>
+            <secondaryinstance>TB3 13,14         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Phase B (In)</secondaryfunctionname>
+            <secondaryinstance>TB3 10,11         </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>on-card</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Phase A (In)</secondaryfunctionname>
+            <secondaryinstance>TB3 7,8           </secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData6 (In)</secondaryfunctionname>
+            <secondaryinstance> 1</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData6 (Out)</secondaryfunctionname>
+            <secondaryinstance>14</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData5 (In)</secondaryfunctionname>
+            <secondaryinstance> 2</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData5 (Out)</secondaryfunctionname>
+            <secondaryinstance>15</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData4 (In)</secondaryfunctionname>
+            <secondaryinstance> 3</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData4 (Out)</secondaryfunctionname>
+            <secondaryinstance>16</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData3 (In)</secondaryfunctionname>
+            <secondaryinstance> 4</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData3 (Out)</secondaryfunctionname>
+            <secondaryinstance>17</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>RXData2 (In)</secondaryfunctionname>
+            <secondaryinstance> 5</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>SSerial</secondarymodulename>
+            <secondaryfunctionname>TXData2 (Out)</secondaryfunctionname>
+            <secondaryinstance> 6</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCountSel</secondarymodulename>
+            <secondaryfunctionname>Muxed Encoder Select 0 (Out)</secondaryfunctionname>
+            <secondaryinstance> 7</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Phase A (In)</secondaryfunctionname>
+            <secondaryinstance> 8</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Phase B (In)</secondaryfunctionname>
+            <secondaryinstance> 9</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Index (In)</secondaryfunctionname>
+            <secondaryinstance>10</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Phase A (In)</secondaryfunctionname>
+            <secondaryinstance>11</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Phase B (In)</secondaryfunctionname>
+            <secondaryinstance>12</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P1</connector>
+            <secondarymodulename>MuxedQCount</secondarymodulename>
+            <secondaryfunctionname>Muxed Index (In)</secondaryfunctionname>
+            <secondaryinstance>13</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 1</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>14</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 2</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>15</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 3</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>16</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 4</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>17</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 5</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 6</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 7</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 8</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance> 9</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>10</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>11</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>12</secondaryinstance>
+        </pin>
+        <pin>
+            <connector>P2</connector>
+            <secondarymodulename>None</secondarymodulename>
+            <secondaryfunctionname></secondaryfunctionname>
+            <secondaryinstance>13</secondaryinstance>
+        </pin>
+    </pins>
+</hostmot2>
