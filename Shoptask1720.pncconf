@@ -323,13 +323,13 @@
   <property name="mesa0c1pin13" type="string" value="unused-sserial"/>
   <property name="mesa0c1pin13inv" type="bool" value="False"/>
   <property name="mesa0c1pin13type" type="string" value="SSERIAL-P1-RX"/>
-  <property name="mesa0c1pin14" type="string" value="unused-encoder"/>
+  <property name="mesa0c1pin14" type="string" value="x-encoder-i"/>
   <property name="mesa0c1pin14inv" type="bool" value="False"/>
   <property name="mesa0c1pin14type" type="string" value="Quad Enc-I"/>
-  <property name="mesa0c1pin15" type="string" value="unused-encoder"/>
+  <property name="mesa0c1pin15" type="string" value="x-encoder-b"/>
   <property name="mesa0c1pin15inv" type="bool" value="False"/>
   <property name="mesa0c1pin15type" type="string" value="Quad Enc-B"/>
-  <property name="mesa0c1pin16" type="string" value="unused-encoder"/>
+  <property name="mesa0c1pin16" type="string" value="x-encoder-a"/>
   <property name="mesa0c1pin16inv" type="bool" value="False"/>
   <property name="mesa0c1pin16type" type="string" value="Quad Enc-A"/>
   <property name="mesa0c1pin17" type="string" value="unused-unused"/>
@@ -4237,7 +4237,7 @@
   <property name="xencoder_wormdriven" type="float" value="1.0"/>
   <property name="xencoder_wormdriver" type="float" value="1.0"/>
   <property name="xencodercounts" type="int" value="4000"/>
-  <property name="xencoderscale" type="int" value="0"/>
+  <property name="xencoderscale" type="float" value="50800.0"/>
   <property name="xhomefinalvel" type="float" value="0.0"/>
   <property name="xhomelatchvel" type="float" value="0.0166666666667"/>
   <property name="xhomepos" type="float" value="0.0"/>
