@@ -234,3 +234,8 @@ net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchan
 net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
 net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
+# spindle
+net spin spindle.0.speed-out-rps => spindle.0.speed-in
+
+
+
