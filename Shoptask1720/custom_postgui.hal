@@ -1,2 +1,3 @@
 # Include your custom_postgui HAL commands here
 # This file will not be overwritten when you run PNCconf again
+net spindle-speed-rpm hm2_7i76e.0.encoder.03.velocity-rpm => gmoccapy.spindle_feedback_bar
