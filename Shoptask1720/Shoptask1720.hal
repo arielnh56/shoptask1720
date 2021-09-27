@@ -327,3 +327,8 @@ net spindle-is-on edge.spindle-stop.in
 net stop-relay-in0 edge.spindle-stop.out => or2.stop-relay.in0 
 net machine-is-disabled => or2.stop-relay.in1 
 net stop-relay or2.stop-relay.out => hm2_7i76e.0.7i76.0.0.output-00
+
+# spindle encoder
+setp hm2_7i76e.0.encoder.03.counter-mode TRUE
+setp hm2_7i76e.0.encoder.03.scale -1
+net spindle-speed hm2_7i76e.0.encoder.03.velocity => spindle.0.speed-in
