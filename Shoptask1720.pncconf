@@ -983,7 +983,7 @@
   <property name="mesa0sserial0_0pin17" type="string" value="unused-output"/>
   <property name="mesa0sserial0_0pin17inv" type="bool" value="False"/>
   <property name="mesa0sserial0_0pin17type" type="string" value="GPIO Output"/>
-  <property name="mesa0sserial0_0pin18" type="string" value="unused-output"/>
+  <property name="mesa0sserial0_0pin18" type="string" value="coolant-mist"/>
   <property name="mesa0sserial0_0pin18inv" type="bool" value="False"/>
   <property name="mesa0sserial0_0pin18type" type="string" value="GPIO Output"/>
   <property name="mesa0sserial0_0pin19" type="string" value="unused-output"/>
