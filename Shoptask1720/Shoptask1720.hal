@@ -9,23 +9,28 @@ loadrt hostmot2
 loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=5 num_pwmgens=0 num_stepgens=3 sserial_port_0=00xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.z,pid.s
-loadrt and2 names=and2.estop-multi
-loadrt or2 names=or2.stop-relay
-loadrt not names=not.machine-is-enabled
 loadrt edge names=edge.spindle-start,edge.spindle-stop
+loadrt and2 names=and2.estop-multi
+loadrt not names=not.machine-is-enabled
+loadrt or2 names=or2.stop-relay
+# software encoder so we can interpolate
+loadrt encoder num_chan=1
+setp encoder.0.counter-mode TRUE
 
 addf hm2_7i76e.0.read          servo-thread
+addf encoder.update-counters servo-thread
+addf encoder.capture-position servo-thread
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
 addf pid.x.do-pid-calcs       servo-thread
 addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
-addf hm2_7i76e.0.write         servo-thread
-addf and2.estop-multi          servo-thread
 addf edge.spindle-start       servo-thread
 addf edge.spindle-stop       servo-thread
-addf or2.stop-relay          servo-thread
+addf and2.estop-multi          servo-thread
 addf not.machine-is-enabled           servo-thread
+addf or2.stop-relay          servo-thread
+addf hm2_7i76e.0.write         servo-thread
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
@@ -267,3 +272,7 @@ net stop-relay or2.stop-relay.out => hm2_7i76e.0.7i76.0.0.output-00
 setp hm2_7i76e.0.encoder.04.counter-mode TRUE
 setp hm2_7i76e.0.encoder.04.scale -1
 net spindle-speed hm2_7i76e.0.encoder.04.velocity => spindle.0.speed-in
+net spindle-is-on spindle.0.at-speed
+net encoder-link encoder.0.phase-A encoder.0.phase-Z hm2_7i76e.0.encoder.04.input-a
+net spindle-index encoder.0.index-enable => spindle.0.index-enable
+net spindle-position encoder.0.position-interpolated spindle.0.revs
