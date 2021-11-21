@@ -1,1 +1,1 @@
-sig+spindle-is-on sig+start-relay sig+stop-relay pin+edge.spindle-start.in pin+edge.spindle-start.out sig+stop-relay-in0 sig+estop-out pin+or2.stop-relay.in0 pin+or2.stop-relay.in1 pin+or2.stop-relay.out
+pin+hm2_7i76e.0.gpio.006.out pin+hm2_7i76e.0.gpio.007.out pin+hm2_7i76e.0.gpio.008.out pin+hm2_7i76e.0.gpio.009.out
