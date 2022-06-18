@@ -350,4 +350,3 @@ setp hm2_7i76e.0.encoder.03.counter-mode TRUE
 setp hm2_7i76e.0.encoder.03.scale -1
 net spindle-speed hm2_7i76e.0.encoder.03.velocity => spindle.0.speed-in
 
-
