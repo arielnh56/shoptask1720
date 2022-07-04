@@ -1,3 +1,65 @@
 # Include your custom_postgui HAL commands here
 # This file will not be overwritten when you run PNCconf again
 net spindle-speed-rpm hm2_7i76e.0.encoder.03.velocity-rpm => gmoccapy.spindle_feedback_bar
+
+# pendant dispay unit fix
+net xb-units units.prog_in xhc-hb04.inch-icon
+loadrt scale names=scale.xb-mc-x,scale.xb-mc-y,scale.xb-mc-z,scale.xb-wc-x,scale.xb-wc-y,scale.xb-wc-z
+
+addf scale.xb-mc-x servo-thread
+addf scale.xb-mc-y servo-thread
+addf scale.xb-mc-z servo-thread
+addf scale.xb-wc-x servo-thread
+addf scale.xb-wc-y servo-thread
+addf scale.xb-wc-z servo-thread
+
+setp scale.xb-mc-x.gain 25.4
+setp scale.xb-mc-y.gain 25.4
+setp scale.xb-mc-z.gain 25.4
+setp scale.xb-wc-x.gain 25.4
+setp scale.xb-wc-y.gain 25.4
+setp scale.xb-wc-z.gain 25.4
+
+loadrt mux2 names=mux2.xb-mc-x,mux2.xb-mc-y,mux2.xb-mc-z,mux2.xb-wc-x,mux2.xb-wc-y,mux2.xb-wc-z
+
+addf mux2.xb-mc-x servo-thread
+addf mux2.xb-mc-y servo-thread
+addf mux2.xb-mc-z servo-thread
+addf mux2.xb-wc-x servo-thread
+addf mux2.xb-wc-y servo-thread
+addf mux2.xb-wc-z servo-thread
+
+net xb-units mux2.xb-mc-x.sel
+net xb-units mux2.xb-mc-y.sel
+net xb-units mux2.xb-mc-z.sel
+net xb-units mux2.xb-wc-x.sel
+net xb-units mux2.xb-wc-y.sel
+net xb-units mux2.xb-wc-z.sel
+
+unlinkp halui.axis.x.pos-feedback
+unlinkp halui.axis.y.pos-feedback
+unlinkp halui.axis.z.pos-feedback
+unlinkp halui.axis.x.pos-relative
+unlinkp halui.axis.y.pos-relative
+unlinkp halui.axis.z.pos-relative
+
+net xb-mc-x-inch halui.axis.x.pos-feedback mux2.xb-mc-x.in1 scale.xb-mc-x.in
+net xb-mc-y-inch halui.axis.y.pos-feedback mux2.xb-mc-y.in1 scale.xb-mc-y.in
+net xb-mc-z-inch halui.axis.z.pos-feedback mux2.xb-mc-z.in1 scale.xb-mc-z.in
+net xb-wc-x-inch halui.axis.x.pos-relative mux2.xb-wc-x.in1 scale.xb-wc-x.in
+net xb-wc-y-inch halui.axis.y.pos-relative mux2.xb-wc-y.in1 scale.xb-wc-y.in
+net xb-wc-z-inch halui.axis.z.pos-relative mux2.xb-wc-z.in1 scale.xb-wc-z.in
+
+net xb-mc-x-mm scale.xb-mc-x.out mux2.xb-mc-x.in0
+net xb-mc-y-mm scale.xb-mc-y.out mux2.xb-mc-y.in0
+net xb-mc-z-mm scale.xb-mc-z.out mux2.xb-mc-z.in0
+net xb-wc-x-mm scale.xb-wc-x.out mux2.xb-wc-x.in0
+net xb-wc-y-mm scale.xb-wc-y.out mux2.xb-wc-y.in0
+net xb-wc-z-mm scale.xb-wc-z.out mux2.xb-wc-z.in0
+
+net pendant:pos-x mux2.xb-mc-x.out
+net pendant:pos-y mux2.xb-mc-y.out
+net pendant:pos-z mux2.xb-mc-z.out
+net pendant:pos-rel-x mux2.xb-wc-x.out
+net pendant:pos-rel-y mux2.xb-wc-y.out
+net pendant:pos-rel-z mux2.xb-wc-z.out
