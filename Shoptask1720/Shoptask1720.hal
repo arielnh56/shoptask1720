@@ -9,10 +9,12 @@ loadrt hostmot2
 loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=5 num_pwmgens=0 num_stepgens=3 sserial_port_0=00xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.z,pid.s
-loadrt edge names=edge.spindle-start,edge.spindle-stop
-loadrt and2 names=and2.estop-multi
-loadrt not names=not.machine-is-enabled
+loadrt and2 names=and2.estop-merge-internal-external
 loadrt or2 names=or2.stop-relay
+loadrt not names=not.machine-is-enabled
+loadrt edge names=edge.spindle-start,edge.spindle-stop,edge.xb-spindle
+loadrt toggle2nist names=toggle2nist.xb-spindle
+loadrt dbounce names=dbounce.xb-spindle
 # software encoder so we can interpolate
 loadrt encoder num_chan=1
 setp encoder.0.counter-mode TRUE
@@ -25,12 +27,15 @@ addf motion-controller        servo-thread
 addf pid.x.do-pid-calcs       servo-thread
 addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
+addf hm2_7i76e.0.write         servo-thread
+addf and2.estop-merge-internal-external          servo-thread
 addf edge.spindle-start       servo-thread
 addf edge.spindle-stop       servo-thread
-addf and2.estop-multi          servo-thread
-addf not.machine-is-enabled           servo-thread
+addf edge.xb-spindle       servo-thread
 addf or2.stop-relay          servo-thread
-addf hm2_7i76e.0.write         servo-thread
+addf not.machine-is-enabled           servo-thread
+addf toggle2nist.xb-spindle servo-thread
+addf dbounce.xb-spindle servo-thread
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
@@ -218,6 +223,7 @@ net jog-selected-neg      halui.axis.selected.minus
 net spindle-manual-cw     halui.spindle.0.forward
 net spindle-manual-ccw    halui.spindle.0.reverse
 net spindle-manual-stop   halui.spindle.0.stop
+net spindle-manual-start  halui.spindle.0.start
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
 net MDI-mode              halui.mode.is-mdi
@@ -240,9 +246,9 @@ net machine-is-enabled        <=  motion.motion-enabled
 
 #  ---estop signals---
 
-net manual-estop hm2_7i76e.0.7i76.0.0.input-15 => and2.estop-multi.in0
-net ui-estop iocontrol.0.user-enable-out => and2.estop-multi.in1
-net estop-out     <=  and2.estop-multi.out
+net manual-estop hm2_7i76e.0.7i76.0.0.input-15 and2.estop-merge-internal-external.in0
+net internal-estop iocontrol.0.user-enable-out => and2.estop-merge-internal-external.in1
+net estop-out     <=  and2.estop-merge-internal-external.out
 net estop-out     =>  iocontrol.0.emc-enable-in
 net machine-is-enabled => not.machine-is-enabled.in
 net machine-is-disabled <= not.machine-is-enabled.out
@@ -268,6 +274,14 @@ net stop-relay-in0 edge.spindle-stop.out => or2.stop-relay.in0
 net machine-is-disabled => or2.stop-relay.in1 
 net stop-relay or2.stop-relay.out => hm2_7i76e.0.7i76.0.0.output-00
 
+# spindle control xhc-hb04
+setp edge.xb-spindle.in-edge FALSE
+setp edge.xb-spindle.out-width-ns 4000000
+#net xb-spindle-dbounce dbounce.xb-spindle.out edge.xb-spindle.in
+net xb-spindle-edge edge.xb-spindle.out toggle2nist.xb-spindle.in
+net spindle-is-on toggle2nist.xb-spindle.is-on
+net spindle-manual-start toggle2nist.xb-spindle.on
+net spindle-manual-stop toggle2nist.xb-spindle.off
 # spindle encoder
 setp hm2_7i76e.0.encoder.04.counter-mode TRUE
 setp hm2_7i76e.0.encoder.04.scale -1
