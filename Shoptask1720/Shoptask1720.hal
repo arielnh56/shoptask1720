@@ -9,7 +9,7 @@ loadrt hostmot2
 loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=5 num_pwmgens=0 num_stepgens=3 sserial_port_0=00xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.z,pid.s
-loadrt and2 names=and2.estop-merge-internal-external
+loadrt and2 names=and2.estop-merge-internal-external,and2.axisfree.x,and2.axisfree.z
 loadrt or2 names=or2.stop-relay
 loadrt not names=not.machine-is-enabled
 loadrt edge names=edge.spindle-start,edge.spindle-stop,edge.xb-spindle
@@ -29,6 +29,8 @@ addf pid.z.do-pid-calcs       servo-thread
 addf pid.s.do-pid-calcs       servo-thread
 addf hm2_7i76e.0.write         servo-thread
 addf and2.estop-merge-internal-external          servo-thread
+addf and2.axisfree.x	servo-thread
+addf and2.axisfree.z    servo-thread
 addf edge.spindle-start       servo-thread
 addf edge.spindle-stop       servo-thread
 addf edge.xb-spindle       servo-thread
