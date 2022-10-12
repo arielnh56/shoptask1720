@@ -1,0 +1,20 @@
+net x-motor-enable axisfree.hal_led_x_enabled
+net y-motor-enable axisfree.hal_led_y_enabled
+net z-motor-enable axisfree.hal_led_z_enabled
+#net machine-is-enabled  =>     hm2_7i76e.0.gpio.006.out
+unlinkp hm2_7i76e.0.gpio.006.out
+net machine-is-enabled => and2.axisfree.x.in0  
+net axisfree-x axisfree.hal_togglebutton_freex-not => and2.axisfree.x.in1
+net x-motor-enable and2.axisfree.x.out => hm2_7i76e.0.gpio.006.out
+
+unlinkp hm2_7i76e.0.gpio.007.out
+net machine-is-enabled => and2.axisfree.y.in0  
+net axisfree-y axisfree.hal_togglebutton_freey-not => and2.axisfree.y.in1
+net y-motor-enable and2.axisfree.y.out => hm2_7i76e.0.gpio.007.out
+
+unlinkp hm2_7i76e.0.gpio.009.out
+net machine-is-enabled => and2.axisfree.z.in0  
+net axisfree-z axisfree.hal_togglebutton_freez-not => and2.axisfree.z.in1
+net z-motor-enable and2.axisfree.z.out => hm2_7i76e.0.gpio.009.out
+
+

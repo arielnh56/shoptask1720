@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-requires gladevcp 0.0 -->
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkTable" id="tbl_marius">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="n_rows">3</property>
+        <property name="n_columns">2</property>
+        <property name="column_spacing">5</property>
+        <property name="row_spacing">5</property>
+        <child>
+          <object class="HAL_ToggleButton" id="hal_togglebutton_freex">
+            <property name="label" translatable="yes">Free X</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="draw_indicator">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="HAL_LED" id="hal_led_x_enabled">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="led_bicolor">True</property>
+            <property name="led_blink_rate">0</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_ToggleButton" id="hal_togglebutton_freez">
+            <property name="label" translatable="yes">Free Z</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="draw_indicator">True</property>
+          </object>
+          <packing>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_LED" id="hal_led_z_enabled">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="led_blink_rate">0</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_ToggleButton" id="hal_togglebutton_freey">
+            <property name="label" translatable="yes">Free Y</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="draw_indicator">True</property>
+          </object>
+          <packing>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HAL_LED" id="hal_led_y_enabled">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="led_bicolor">True</property>
+            <property name="led_blink_rate">0</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">2</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
