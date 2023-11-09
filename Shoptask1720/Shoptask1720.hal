@@ -15,9 +15,6 @@ loadrt not names=not.machine-is-enabled
 loadrt edge names=edge.spindle-start,edge.spindle-stop,edge.xb-spindle
 loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
-# software encoder so we can interpolate
-loadrt encoder num_chan=1
-setp encoder.0.counter-mode TRUE
 
 addf hm2_7i76e.0.read          servo-thread
 addf encoder.update-counters servo-thread
@@ -285,10 +282,9 @@ net spindle-is-on toggle2nist.xb-spindle.is-on
 net spindle-manual-start toggle2nist.xb-spindle.on
 net spindle-manual-stop toggle2nist.xb-spindle.off
 # spindle encoder
-setp hm2_7i76e.0.encoder.04.counter-mode TRUE
-setp hm2_7i76e.0.encoder.04.scale -1
+setp hm2_7i76e.0.encoder.04.counter-mode 0
+setp hm2_7i76e.0.encoder.04.scale 300
 net spindle-speed hm2_7i76e.0.encoder.04.velocity => spindle.0.speed-in
 net spindle-is-on spindle.0.at-speed
-net encoder-link encoder.0.phase-A encoder.0.phase-Z hm2_7i76e.0.encoder.04.input-a
-net spindle-index encoder.0.index-enable => spindle.0.index-enable
-net spindle-position encoder.0.position-interpolated spindle.0.revs
+net spindle-index  hm2_7i76e.0.encoder.04.index-enable => spindle.0.index-enable
+net spindle-position hm2_7i76e.0.encoder.04.position spindle.0.revs
