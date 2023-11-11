@@ -17,8 +17,6 @@ loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
 
 addf hm2_7i76e.0.read          servo-thread
-addf encoder.update-counters servo-thread
-addf encoder.capture-position servo-thread
 addf motion-command-handler   servo-thread
 addf motion-controller        servo-thread
 addf pid.x.do-pid-calcs       servo-thread
@@ -283,8 +281,8 @@ net spindle-manual-start toggle2nist.xb-spindle.on
 net spindle-manual-stop toggle2nist.xb-spindle.off
 # spindle encoder
 setp hm2_7i76e.0.encoder.04.counter-mode 0
-setp hm2_7i76e.0.encoder.04.scale 300
-net spindle-speed hm2_7i76e.0.encoder.04.velocity => spindle.0.speed-in
+setp hm2_7i76e.0.encoder.04.scale -1200
+net spindle-speed hm2_7i76e.0.encoder.04.velocity-rpm => spindle.0.speed-in
 net spindle-is-on spindle.0.at-speed
 net spindle-index  hm2_7i76e.0.encoder.04.index-enable => spindle.0.index-enable
 net spindle-position hm2_7i76e.0.encoder.04.position spindle.0.revs
