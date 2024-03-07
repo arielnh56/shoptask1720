@@ -264,7 +264,7 @@ net z-pos-fb               =>  joint.2.motor-pos-fb
 # ---setup home / limit switch signals---
 
 net z-home-sw  hm2_7i76e.0.7i76.0.0.input-12 =>  joint.2.home-sw-in
-net z-neg-limit     =>  joint.2.neg-lim-sw-in
+net z-neg-limit hm2_7i76e.0.7i76.0.0.input-11-not    =>  joint.2.neg-lim-sw-in
 net z-pos-limit     =>  joint.2.pos-lim-sw-in
 
 
@@ -306,7 +306,7 @@ net coolant-flood     <=  iocontrol.0.coolant-flood
 
 #  ---probe signal---
 
-net probe-in     =>  motion.probe-input
+net probe-in  hm2_7i76e.0.7i76.0.0.input-10   =>  motion.probe-input
 
 #  ---motion control signals---
 
@@ -327,10 +327,10 @@ net machine-is-disabled <= not.machine-is-enabled.out
 #  ---manual tool change signals---
 
 loadusr -W hal_manualtoolchange
-net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
-net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
-net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
-net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+#net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
+#net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
+#net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
+#net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 # spindle control
 net spindle-is-on spindle.0.on

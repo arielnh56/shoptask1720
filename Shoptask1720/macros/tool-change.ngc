@@ -1,0 +1,94 @@
+O<tool-change> SUB
+( see: http://www.linuxcnc.org/index.php/english/forum/10-advanced-configuration/5596-manual-tool-change--tool-lengh-touch-off?start=30#48235 )
+
+( Filename: tool-change.ngc )
+( LinuxCNC Manual Tool-Change Subroutines for Milling Machines version 1.1 modified )
+( Simplified and modified for ShopTask 1720 mill mode by Alastair Young )
+
+( In the LinuxCNC .ini config file, under the [RS274NGC] section add: )
+(    # change/add/use SUBROUTINE_PATH to point to the location where these tool-change subroutines are located: )
+(    SUBROUTINE_PATH = macros )
+(    REMAP=M6    modalgroup=6 ngc=tool-change )
+
+( and under the [EMCIO] section add: )
+(    TOOL_CHANGE_AT_G30 = 0 )
+
+( and ensure neither TOOL_CHANGE_POSITION nor TOOL_CHANGE_QUILL_UP is set. )
+
+( pins set in Shoptask.hal for the tool setter and its limit switch )
+
+( post-processor notes )
+( TODO: verify G43 call outs after tool change - code ensures G43 so I don't forget )
+( Use G53 instead of G28? This job uses G28 as tool change position so G28 is fine? )
+
+( Usage: M6 in the g-code will invoke a manual tool change with automatic tool height adjustment. )
+
+( General theory of operation: touches each tool off to the tool height sensor.                                                )
+(     Tool setter trigger point is quill nose against sensor in G59.3. This actually is non critical within the                )
+(     same Z offset touch off but will save nose-tip distance in the tool table so easy to sanity check G59.3 is touched off   )
+(     with guage blocks as the nose does not reach the setter but it's all relative so it does not really matter. Using G59.3  )
+(     origin is useful as the tool setter is not permanently fixed and may have to relocate depending on setup. Hardcoding the )
+(     location is not convenient.                                                                                              )
+(     Tool Change position is G28. This is a traditional use of G28, and again makes it easy to relocate. Due to the limited Z )
+(     it can't be over the tool setter.                                                                                        )
+(     This is in a loop so I can have multiple tries at getting the tool length to reach the sensor in case I hit the          )
+(     Z blind spot on the Shoptask - 3.1" travel and a 4" extension. We are assuming the sensor is roughly level with the work )
+(     probing is done from 0 to machine min-z in calculated G53 space                                                          )
+(     M70/M72 are used to save and restore state.                                                                              )
+(     Original position is stored in G30 and returned to )
+
+( Side effects: sets G30, sets motion mode to G1. Upates tool offsets in tool table )
+
+(------------------------------- CONFIGURATION PARAMETERS ----------------------------------------------)
+#<_ProbeMinZ> =        [#<_ini[axis_z]min_limit>-#5383+0.030]     ( a little above min-z in G59.3 )
+#<_ProbeRetract> =      0.025     ( small distance to retract before approaching switch/touch-off plate second time )
+#<_ProbeFeed1> =       10.0     ( feed rate for touching switch/touch-off plate first time )
+#<_ProbeFeed2> =        1.0     ( feed rate for touching switch/touch-off plate second time )
+(-------------------------------------------------------------------------------------------------------)
+
+G43                                            ( ensure tool length comp is on )
+M70                                            ( save current modal state )
+
+M9                                             ( turn off coolant, will be restored on return if it was on )
+M5                                             ( turn off spindle, cannot be on during the probe )
+
+G20                                            ( use inches here, units will be restored on return )
+G30.1                                          ( save current position in #5181-#5183... )
+G49                                            ( clear tool length compensation )
+G90                                            ( use absolute positioning here )
+G94                                            ( use feedrate in units/min )
+G40                                            ( turn cutter radius compensation off here )
+
+
+o100 DO                                        ( Loop till success )
+  G53 G0 Z0                                    ( Quill up )
+  G28                                          ( Moves to desired position for manual tool change )
+
+  M6                                           ( do the normal M6 stuff )
+
+  #<_TOOLNUM>=#5400                            ( save the tool number in case we have to retry )
+  G59.3                                        ( switch to toolsetter workspace )
+  G0 X0 Y0                                     ( rapid to high place directly over switch )
+  G38.3 Z[#<_ProbeMinZ>] F[#<_ProbeFeed1>]     ( trip switch slowly )
+  o110 IF [#5070 EQ 1]                         ( success )
+    G91                                        ( incremental )
+    G0 Z[#<_ProbeRetract>]                     ( go up slightly )
+    G90                                        ( absolute )
+    G38.3 Z[#<_ProbeMinZ>] F[#<_ProbeFeed2>]   ( trip switch very slowly )
+  o110 ENDIF                                   ( end success )
+  o120 IF [#5070 EQ 0]                         ( fail )
+    (MSG, PROBE FAILED TRY AGAIN)
+    M61 Q0                                     ( clear tool or it won't reload )
+    T#<_TOOLNUM>                               ( set tool num for retry. We probably need more stickout )
+  o120 ENDIF                                   ( end fail )
+o100 WHILE  [#5070 EQ 0]                       ( end loop till success )
+
+G10 L11 P#<_TOOLNUM> Z0			       ( update the tool table )
+G53 G0 Z0                                      ( quill up )
+G91 G30 X0 Y0                                  ( return to where we were in X Y)
+G30	                                       ( return to where we were in Z )
+M72                                            ( restore modal state )
+ 
+O<tool-change> ENDSUB
+M2
+

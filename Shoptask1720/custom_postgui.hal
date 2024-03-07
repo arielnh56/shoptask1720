@@ -63,3 +63,9 @@ net pendant:pos-z mux2.xb-mc-z.out
 net pendant:pos-rel-x mux2.xb-wc-x.out
 net pendant:pos-rel-y mux2.xb-wc-y.out
 net pendant:pos-rel-z mux2.xb-wc-z.out
+
+net tool-change gmoccapy.toolchange-change <= iocontrol.0.tool-change
+net tool-changed gmoccapy.toolchange-changed <= iocontrol.0.tool-changed
+net tool-number gmoccapy.toolchange-number <= iocontrol.0.tool-prep-number
+net tool-prepare-loopback iocontrol.0.tool-prepare <= iocontrol.0.tool-prepared
+net tool-offset-z motion.tooloffset.z => gmoccapy.tooloffset-z
