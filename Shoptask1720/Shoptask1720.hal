@@ -10,9 +10,7 @@ loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=5 num_pwmgens=0 nu
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.z,pid.s
 loadrt and2 names=and2.estop-merge-internal-external,and2.axisfree.x,and2.axisfree.z
-loadrt or2 names=or2.stop-relay
 loadrt not names=not.machine-is-enabled
-loadrt edge names=edge.spindle-start,edge.spindle-stop,edge.xb-spindle
 loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
 
@@ -26,10 +24,7 @@ addf hm2_7i76e.0.write         servo-thread
 addf and2.estop-merge-internal-external          servo-thread
 addf and2.axisfree.x	servo-thread
 addf and2.axisfree.z    servo-thread
-addf edge.spindle-start       servo-thread
-addf edge.spindle-stop       servo-thread
 addf edge.xb-spindle       servo-thread
-addf or2.stop-relay          servo-thread
 addf not.machine-is-enabled           servo-thread
 addf toggle2nist.xb-spindle servo-thread
 addf dbounce.xb-spindle servo-thread
@@ -259,17 +254,11 @@ net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchan
 net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 # spindle control
-net spindle-is-on spindle.0.on
-setp edge.spindle-start.in-edge FALSE
-setp edge.spindle-start.out-width-ns 100000000
-net spindle-is-on => edge.spindle-start.in
-net start-relay edge.spindle-start.out => hm2_7i76e.0.7i76.0.0.output-01
-setp edge.spindle-stop.in-edge TRUE
-setp edge.spindle-stop.out-width-ns 100000000
-net spindle-is-on edge.spindle-stop.in
-net stop-relay-in0 edge.spindle-stop.out => or2.stop-relay.in0 
-net machine-is-disabled => or2.stop-relay.in1 
-net stop-relay or2.stop-relay.out => hm2_7i76e.0.7i76.0.0.output-00
+net spindle-is-on spindle.0.on => hm2_7i76e.0.7i76.0.0.spinena
+net spindle-reverse spindle.0.reverse => hm2_7i76e.0.7i76.0.0.spinedir
+# For VFD operation the contactor feeds the VFD, so is ESTOP sensitive only
+# It does not control spindle start stop
+net machine-is-enabled => hm2_7i76e.0.7i76.0.0.output-01 # start relay NO
 
 # spindle control xhc-hb04
 setp edge.xb-spindle.in-edge FALSE
