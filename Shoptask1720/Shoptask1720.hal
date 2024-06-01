@@ -13,6 +13,7 @@ loadrt and2 names=and2.estop-merge-internal-external,and2.axisfree.x,and2.axisfr
 loadrt not names=not.machine-is-enabled
 loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
+loadrt edge names=edge.xb-spindle
 
 addf hm2_7i76e.0.read          servo-thread
 addf motion-command-handler   servo-thread
@@ -255,10 +256,12 @@ net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-p
 
 # spindle control
 net spindle-is-on spindle.0.on => hm2_7i76e.0.7i76.0.0.spinena
-net spindle-reverse spindle.0.reverse => hm2_7i76e.0.7i76.0.0.spinedir
+net spindle-reverse spindle.0.reverse => hm2_7i76e.0.7i76.0.0.spindir
+# full speed for now
+setp hm2_7i76e.0.7i76.0.0.spinout 100
 # For VFD operation the contactor feeds the VFD, so is ESTOP sensitive only
 # It does not control spindle start stop
-net machine-is-enabled => hm2_7i76e.0.7i76.0.0.output-01 # start relay NO
+net machine-is-enabled => hm2_7i76e.0.7i76.0.0.output-00 # start relay NO
 
 # spindle control xhc-hb04
 setp edge.xb-spindle.in-edge FALSE
