@@ -1,1 +1,1 @@
-sig+spindle-is-on sig+start-relay sig+stop-relay pin+edge.spindle-start.in pin+edge.spindle-start.out sig+stop-relay-in0 sig+estop-out pin+or2.stop-relay.in0 pin+or2.stop-relay.in1 pin+or2.stop-relay.out
+pin+pid.s.enable pin+pid.s.command pin+pid.s.feedback pin+pid.s.output pin+pid.s.maxoutput pin+pid.s.saturated pin+pid.s.Pgain pin+pid.s.Igain pin+pid.s.Dgain pin+pid.s.FF0 pin+pid.s.FF1 pin+pid.s.FF2 sig+button-start sig+button-stop

@@ -15,7 +15,8 @@ loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
 loadrt edge names=edge.xb-spindle
 loadrt abs names=abs.spindle-speed
-loadrt lowpass names=lowpass.spindle
+loadrt lowpass names=lowpass.spindle-speed
+loadrt scale names=scale.xb-mc-x,scale.xb-mc-z,scale.xb-wc-x,scale.xb-wc-z,scale.xb-mc-d,scale.xb-wc-d,scale.spindle-speed
 
 addf hm2_7i76e.0.read          servo-thread
 addf motion-command-handler   servo-thread
@@ -32,7 +33,9 @@ addf not.machine-is-enabled           servo-thread
 addf toggle2nist.xb-spindle servo-thread
 addf dbounce.xb-spindle servo-thread
 addf abs.spindle-speed servo-thread
-addf lowpass.spindle servo-thread
+addf lowpass.spindle-speed servo-thread
+addf scale.spindle-speed servo-thread
+setp scale.spindle-speed.gain 60.0
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
@@ -259,26 +262,23 @@ net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchan
 net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 # spindle control
-setp   pid.s.Pgain     0
-setp   pid.s.Igain     10.0
-setp   pid.s.Dgain     0.5
+setp   pid.s.Pgain     0.013
+setp   pid.s.Igain     0.02
+setp   pid.s.Dgain     0.01
 setp   pid.s.bias      0
-setp   pid.s.FF0       0
-setp   pid.s.FF1       2.0
+setp   pid.s.FF0       0.0
+setp   pid.s.FF1       0.01
 setp   pid.s.FF2       0
-setp   pid.s.deadband  0
+setp   pid.s.deadband  0.2
 setp   pid.s.maxoutput 100
-setp   pid.s.enable 1
-setp   lowpass.spindle.gain 0.1
-net spindle-speed-command-abs spindle.0.speed-out-rps-abs => pid.s.command
-net spindle-speed-actual-abs abs.spindle-speed.out => lowpass.spindle.in
-net spindle-speed-filtered lowpass.spindle.out => pid.s.feedback
+setp   lowpass.spindle-speed.gain 0.01
+net spindle-speed-command-abs spindle.0.speed-out-abs => pid.s.command
 net spindle-pot pid.s.output => hm2_7i76e.0.7i76.0.0.spinout
 # This setting is to limit bogus stepgen
 # velocity corrections caused by position
 # feedback sample time jitter.
 setp   pid.x.maxerror 0.000500
-net spindle-is-on spindle.0.on => hm2_7i76e.0.7i76.0.0.spinena
+net spindle-is-on spindle.0.on => hm2_7i76e.0.7i76.0.0.spinena pid.s.enable
 net spindle-reverse spindle.0.reverse => hm2_7i76e.0.7i76.0.0.spindir
 # full speed for now
 # For VFD operation the contactor feeds the VFD, so is ESTOP sensitive only
@@ -296,7 +296,13 @@ net spindle-manual-stop toggle2nist.xb-spindle.off
 # spindle encoder
 setp hm2_7i76e.0.encoder.04.counter-mode 0
 setp hm2_7i76e.0.encoder.04.scale -1200
-net spindle-speed hm2_7i76e.0.encoder.04.velocity => spindle.0.speed-in abs.spindle-speed.in
+net spindle-speed hm2_7i76e.0.encoder.04.velocity => lowpass.spindle-speed.in
+net spindle-speed-filtered lowpass.spindle-speed.out => spindle.0.speed-in scale.spindle-speed.in
+net spindle-speed-rpm scale.spindle-speed.out => abs.spindle-speed.in
+net spindle-speed-abs abs.spindle-speed.out => pid.s.feedback
 net spindle-is-on spindle.0.at-speed
 net spindle-index  hm2_7i76e.0.encoder.04.index-enable => spindle.0.index-enable
 net spindle-position hm2_7i76e.0.encoder.04.position spindle.0.revs
+# stop start buttons
+net button-start hm2_7i76e.0.7i76.0.0.input-08
+net button-stop hm2_7i76e.0.7i76.0.0.input-09-not
