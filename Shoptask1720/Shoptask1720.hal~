@@ -306,7 +306,6 @@ net spindle-manual-start or2.start-manual.out halui.spindle.0.start
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
 net mode-mdi             halui.mode.is-mdi
-net mode-manual             halui.mode.is-manual
 
 #  ---coolant signals---
 
@@ -359,12 +358,5 @@ net spindle-speed hm2_7i76e.0.encoder.03.velocity => lowpass.spindle-speed.in
 net spindle-speed-filtered lowpass.spindle-speed.out => spindle.0.speed-in scale.spindle-speed.in
 net spindle-speed-rpm scale.spindle-speed.out
 net spindle-is-on spindle.0.at-speed
-# stop start buttons - manual mode
-net button-start hm2_7i76e.0.7i76.0.0.input-08 and2.start-manual.in0
-net button-stop hm2_7i76e.0.7i76.0.0.input-09-not and2.stop-manual.in0
-net mode-manual and2.start-manual.in1 and2.stop-manual.in1
-net button-start-manual and2.start-manual.out or2.start-manual.in1
-net button-stop-manual and2.stop-manual.out or2.stop-manual.in1
-
 
 
