@@ -4,7 +4,6 @@ net spindle-speed-rpm gmoccapy.spindle_feedback_bar
 
 # pendant dispay unit fix
 net xb-units units.prog_in xhc-hb04.inch-icon
-loadrt scale names=scale.xb-mc-x,scale.xb-mc-y,scale.xb-mc-z,scale.xb-wc-x,scale.xb-wc-y,scale.xb-wc-z
 
 addf scale.xb-mc-x servo-thread
 addf scale.xb-mc-y servo-thread

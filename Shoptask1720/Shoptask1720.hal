@@ -11,14 +11,13 @@ setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.z,pid.s
 loadrt and2 names=and2.estop-merge-internal-external,and2.axisfree.x,and2.axisfree.y,and2.axisfree.z,and2.stop-manual,and2.start-manual
 loadrt or2 names=or2.stop-manual,or2.start-manual
-loadrt or2 names=or2.stop-relay
 loadrt not names=not.machine-is-enabled
 loadrt edge names=edge.xb-spindle
 loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
-addf lowpass.spindle-speed servo-thread
-addf scale.spindle-speed servo-thread
-setp scale.spindle-speed.gain 60.0
+loadrt lowpass names=lowpass.spindle-speed
+loadrt scale names=scale.xb-mc-x,scale.xb-mc-y,scale.xb-mc-z,scale.xb-wc-x,scale.xb-wc-y,scale.xb-wc-z,scale.spindle-speed
+
 
 
 addf hm2_7i76e.0.read          servo-thread
@@ -41,6 +40,9 @@ addf edge.xb-spindle       servo-thread
 addf not.machine-is-enabled           servo-thread
 addf toggle2nist.xb-spindle servo-thread
 addf dbounce.xb-spindle servo-thread
+addf lowpass.spindle-speed servo-thread
+addf scale.spindle-speed servo-thread
+setp scale.spindle-speed.gain 60.0
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
