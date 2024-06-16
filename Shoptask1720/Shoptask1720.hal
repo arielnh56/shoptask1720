@@ -227,8 +227,8 @@ net jog-selected-pos      halui.axis.selected.plus
 net jog-selected-neg      halui.axis.selected.minus
 net spindle-manual-cw     halui.spindle.0.forward
 net spindle-manual-ccw    halui.spindle.0.reverse
-net or2.stop-manual.out   halui.spindle.0.stop
-net or2.start-manual.out  halui.spindle.0.start
+net spindle-manual-stop or2.stop-manual.out   halui.spindle.0.stop
+net spindle-manual-start or2.start-manual.out  halui.spindle.0.start
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
 net mode-mdi              halui.mode.is-mdi
@@ -268,14 +268,14 @@ net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchan
 net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 # spindle control
-setp   pid.s.Pgain     0.013
-setp   pid.s.Igain     0.02
+setp   pid.s.Pgain     0.05
+setp   pid.s.Igain     0.1
 setp   pid.s.Dgain     0.01
 setp   pid.s.bias      0
 setp   pid.s.FF0       0.0
 setp   pid.s.FF1       0.01
 setp   pid.s.FF2       0
-setp   pid.s.deadband  0.2
+setp   pid.s.deadband  2
 setp   pid.s.maxoutput 100
 setp   lowpass.spindle-speed.gain 0.01
 net spindle-speed-command-abs spindle.0.speed-out-abs => pid.s.command
@@ -296,8 +296,8 @@ setp edge.xb-spindle.in-edge FALSE
 setp edge.xb-spindle.out-width-ns 4000000
 net xb-spindle-edge edge.xb-spindle.out toggle2nist.xb-spindle.in
 net spindle-is-on toggle2nist.xb-spindle.is-on
-net toggle2nist.xb-spindle.on or2.start-manual.in0
-net toggle2nist.xb-spindle.off or2.stop-manual.in0
+net xb-spindle-on toggle2nist.xb-spindle.on or2.start-manual.in0
+net xb-spindle-off toggle2nist.xb-spindle.off or2.stop-manual.in0
 # spindle encoder
 setp hm2_7i76e.0.encoder.04.counter-mode 0
 setp hm2_7i76e.0.encoder.04.scale -1200
