@@ -9,12 +9,16 @@ loadrt hostmot2
 loadrt hm2_eth board_ip="192.168.1.121" config=" num_encoders=5 num_pwmgens=0 num_stepgens=3 sserial_port_0=00xxxx" 
 setp    hm2_7i76e.0.watchdog.timeout_ns 5000000
 loadrt pid names=pid.x,pid.y,pid.z,pid.s
-loadrt and2 names=and2.estop-merge-internal-external,and2.axisfree.x,and2.axisfree.y,and2.axisfree.z
-loadrt or2 names=or2.stop-relay
+loadrt and2 names=and2.estop-merge-internal-external,and2.axisfree.x,and2.axisfree.y,and2.axisfree.z,and2.stop-manual,and2.start-manual
+loadrt or2 names=or2.stop-manual,or2.start-manual
 loadrt not names=not.machine-is-enabled
-loadrt edge names=edge.spindle-start,edge.spindle-stop,edge.xb-spindle
+loadrt edge names=edge.xb-spindle
 loadrt toggle2nist names=toggle2nist.xb-spindle
 loadrt dbounce names=dbounce.xb-spindle
+loadrt lowpass names=lowpass.spindle-speed
+loadrt scale names=scale.xb-mc-x,scale.xb-mc-y,scale.xb-mc-z,scale.xb-wc-x,scale.xb-wc-y,scale.xb-wc-z,scale.spindle-speed
+
+
 
 addf hm2_7i76e.0.read          servo-thread
 addf motion-command-handler   servo-thread
@@ -28,13 +32,17 @@ addf and2.estop-merge-internal-external          servo-thread
 addf and2.axisfree.x	servo-thread
 addf and2.axisfree.y	servo-thread
 addf and2.axisfree.z    servo-thread
-addf edge.spindle-start       servo-thread
-addf edge.spindle-stop       servo-thread
+addf and2.stop-manual   servo-thread
+addf and2.start-manual   servo-thread
+addf or2.stop-manual   servo-thread
+addf or2.start-manual   servo-thread
 addf edge.xb-spindle       servo-thread
-addf or2.stop-relay          servo-thread
 addf not.machine-is-enabled           servo-thread
 addf toggle2nist.xb-spindle servo-thread
 addf dbounce.xb-spindle servo-thread
+addf lowpass.spindle-speed servo-thread
+addf scale.spindle-speed servo-thread
+setp scale.spindle-speed.gain 60.0
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
@@ -293,11 +301,12 @@ net jog-selected-pos      halui.axis.selected.plus
 net jog-selected-neg      halui.axis.selected.minus
 net spindle-manual-cw     halui.spindle.0.forward
 net spindle-manual-ccw    halui.spindle.0.reverse
-net spindle-manual-stop   halui.spindle.0.stop
-net spindle-manual-start  halui.spindle.0.start
+net spindle-manual-stop or2.stop-manual.out  halui.spindle.0.stop
+net spindle-manual-start or2.start-manual.out halui.spindle.0.start
 net machine-is-on         halui.machine.is-on
 net jog-speed             halui.axis.jog-speed
-net MDI-mode              halui.mode.is-mdi
+net mode-mdi             halui.mode.is-mdi
+net mode-manual             halui.mode.is-manual
 
 #  ---coolant signals---
 
@@ -333,28 +342,29 @@ loadusr -W hal_manualtoolchange
 #net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 # spindle control
-net spindle-is-on spindle.0.on
-setp edge.spindle-start.in-edge FALSE
-setp edge.spindle-start.out-width-ns 100000000
-net spindle-is-on => edge.spindle-start.in
-net start-relay edge.spindle-start.out => hm2_7i76e.0.7i76.0.0.output-01
-setp edge.spindle-stop.in-edge TRUE
-setp edge.spindle-stop.out-width-ns 100000000
-net spindle-is-on edge.spindle-stop.in
-net stop-relay-in0 edge.spindle-stop.out => or2.stop-relay.in0 
-net machine-is-disabled => or2.stop-relay.in1 
-net stop-relay or2.stop-relay.out => hm2_7i76e.0.7i76.0.0.output-00
+net spindle-is-on halui.spindle.0.is-on hm2_7i76e.0.7i76.0.0.output-00 # start relay NO
+setp lowpass.spindle-speed.gain 0.01
 
 # spindle control xhc-hb04
 setp edge.xb-spindle.in-edge FALSE
 setp edge.xb-spindle.out-width-ns 4000000
-#net xb-spindle-dbounce dbounce.xb-spindle.out edge.xb-spindle.in
 net xb-spindle-edge edge.xb-spindle.out toggle2nist.xb-spindle.in
 net spindle-is-on toggle2nist.xb-spindle.is-on
-net spindle-manual-start toggle2nist.xb-spindle.on
-net spindle-manual-stop toggle2nist.xb-spindle.off
+net xb-spindle-on toggle2nist.xb-spindle.on or2.start-manual.in0
+net xb-spindle-off toggle2nist.xb-spindle.off or2.stop-manual.in0
 # spindle encoder
 setp hm2_7i76e.0.encoder.03.counter-mode TRUE
 setp hm2_7i76e.0.encoder.03.scale -1
-net spindle-speed hm2_7i76e.0.encoder.03.velocity => spindle.0.speed-in
+net spindle-speed hm2_7i76e.0.encoder.03.velocity => lowpass.spindle-speed.in
+net spindle-speed-filtered lowpass.spindle-speed.out => spindle.0.speed-in scale.spindle-speed.in
+net spindle-speed-rpm scale.spindle-speed.out
+net spindle-is-on spindle.0.at-speed
+# stop start buttons - manual mode
+net button-start hm2_7i76e.0.7i76.0.0.input-08 and2.start-manual.in0
+net button-stop hm2_7i76e.0.7i76.0.0.input-09-not and2.stop-manual.in0
+net mode-manual and2.start-manual.in1 and2.stop-manual.in1
+net button-start-manual and2.start-manual.out or2.start-manual.in1
+net button-stop-manual and2.stop-manual.out or2.stop-manual.in1
+
+
 
