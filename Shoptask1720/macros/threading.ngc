@@ -1,5 +1,11 @@
 ;threading
 
+;#1 = Major diameter
+;#2 = surface speed - limited to 200rpm for threading
+;#3 = tool
+;#4 = pitch
+;#5 = length of thread
+;#6 = 0=external 1=internal
 O<threading> sub
 
 G7 ; Lathe Diameter Mode
@@ -20,11 +26,10 @@ G96 D1200 S#2 ; Constant Surface Speed Mode
 M3
 G96 D1200 S#2 ; Constant Surface Speed Mode
 G4 P1
-M3
+M3 ; repeat because G96 bug
 g95 F0.1 ; Feed-Per-Rev Mode
 
-g4p1 ; Wait to reach speed
-G4 P1
+G4 P1 ; wait for speed
 
 ;Threading
         O51 IF [#6 GT 0.5]
@@ -51,6 +56,7 @@ G4 P1
 		g1 X #<OD>
 		g1 Z #5
                 G96 D200 S#2 ; Constant Surface Speed Mode
+                G4 P1 ; wait for speed
 		G0 X[#<OD> +1]
 		G0 Z #13
  		g76 p#4 z#5 i-1 j0.2 k#3 h3 r1.5 q29.5 e0 l0
