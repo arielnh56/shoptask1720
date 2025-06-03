@@ -18,6 +18,7 @@ loadrt edge names=edge.xb-spindle
 loadrt abs names=abs.spindle-speed
 loadrt lowpass names=lowpass.spindle-speed
 loadrt scale names=scale.xb-mc-x,scale.xb-mc-z,scale.xb-wc-x,scale.xb-wc-z,scale.xb-mc-d,scale.xb-wc-d,scale.spindle-speed
+loadrt near names=near.spindle-speed
 
 addf hm2_7i76e.0.read          servo-thread
 addf motion-command-handler   servo-thread
@@ -40,7 +41,9 @@ addf dbounce.xb-spindle servo-thread
 addf abs.spindle-speed servo-thread
 addf lowpass.spindle-speed servo-thread
 addf scale.spindle-speed servo-thread
+addf near.spindle-speed servo-thread
 setp scale.spindle-speed.gain 60.0
+setp near.spindle-speed.scale 1.01
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 
@@ -305,7 +308,9 @@ net spindle-speed hm2_7i76e.0.encoder.04.velocity => lowpass.spindle-speed.in
 net spindle-speed-filtered lowpass.spindle-speed.out => spindle.0.speed-in scale.spindle-speed.in
 net spindle-speed-rpm scale.spindle-speed.out => abs.spindle-speed.in
 net spindle-speed-abs abs.spindle-speed.out => pid.s.feedback
-net spindle-is-on spindle.0.at-speed
+net spindle-cmd spindle.0.speed-out-rps => near.spindle-speed.in1
+net spindle-speed-filtered => near.spindle-speed.in2
+net spindle-at-speed spindle.0.at-speed <= near.spindle-speed.out
 net spindle-index  hm2_7i76e.0.encoder.04.index-enable => spindle.0.index-enable
 net spindle-position hm2_7i76e.0.encoder.04.position spindle.0.revs
 # stop start buttons - manual mode
