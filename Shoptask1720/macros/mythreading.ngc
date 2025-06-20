@@ -1,0 +1,124 @@
+;threading
+
+;#1 = [1/2]; Major diameter
+;#2 = [30]; surface speed - limited to 200rpm for threading
+;#3 = [8] ; tool
+;#4 = [13] ; pitch
+;#5 = [-1] ; depth of thread (absolute)
+;#6 = [0] ;0=external 1=internal
+;#7 = [0] ; 1=metric
+;#8 = [1] ; 1=unified
+;#9 = [0] ; 1=whitworth
+;#10 = [0] ; 1=cycle
+;#11 = [0] ; allowance (diameter)
+O<mythreading> sub
+  M73 ; save modal state
+  M6 T#3 G43
+  ; our baseline is imperial, but we want to thread metric in G21
+  ; and our passed parameters are metric if we are doing metric
+  ; so some values need converting
+  #<to_mm> = [[#<_metric> * 24.4] + 1]
+  #<allowance> = [0.0020/2]
+  #<ioffset> = [0.02 * #<to_mm>] ; drive line offset above major diameter 0.020"
+  #<J> = [0.005 * #<to_mm>] ; depth of cut
+  #<R> = [1.2] ; depth regression
+  o100 if [#9 GT 0.5] ; whitworth
+    #<thread_angle> = [55]
+  o100 else
+    #<thread_angle> = [60]
+  o100 endif
+  #<half_angle> = [#<thread_angle>/2]
+  #<Q> = [#<half_angle> - 1] ; compound slide angle
+  #<spring> = [2]  ; spring passes
+  #<feed> = [0.01 * #<to_mm>] ; feed per rev for turning pass
+  #<rpm> = [200] ; threading rpm limit
+  #<tool_radius> = [[#5410 / 2] * #<to_mm>] ; if zero, we calculate for full form threading tool
+
+  ; switch to metric if needed
+  o101 if [#7 GT 0.5] ; metric
+    #<P> = [#4]
+    G21
+  o101 else ; TPI
+    #<P> = [1.0 / #4]
+    G20
+  o101 endif
+  
+  #<H> = [#<P> * SIN[#<thread_angle>]]
+  o104 if [#<tool_radius> EQ 0] ; full form tool, K is DOC
+    o107 if [[#7 GT 0.5] OR [#8 GT 0.5]] ; metric or unified
+      #<K> = [#<H> * 0.625]
+    o107 else if [#9 GT 0.5] ; whitworth
+      #<K> = [#<H> * 0.666667]
+    o107 else if [#10 GT 0.5]; cycle
+      #<K> = [#<P> * 0.666667]
+    o107 else
+      (debug, invalid thread type)
+      M2
+    o107 endif
+  o104 else ; calculate offset from tip to triangular root
+    #<tro> = [[#<tool_radius> / sin[#<half_angle>]] - #<tool_radius>]
+    o107 if [[#7 GT 0.5] OR [#8 GT 0.5]] ; metric or unified
+      #<K> = [[#<H> * [7/8]] - #<tro>]
+    o107 else if [#9 GT 0.5] ; whitworth
+      #<K> = [[#<H> * [5/6]] - #<tro>]
+    o107 else if [#10 GT 0.5]; cycle
+      #<K> = [[#<P> * [5/6]] - #<tro>]
+    o107 else
+      (debug, invalid thread type)
+      M2
+    o107 endif
+  o104 endif
+
+  ; the drive line is along the major diameter, which we turned to size, plus an offset
+  ; I = offset from the drive line to the thread peak
+  #<I> = [#<ioffset> + #<allowance>]
+  o103 if [#6 LT 0.5] ; external thread
+    #<I> = [0 - #<I>]
+  o103 endif
+  
+  G8 ; radius mode
+  G18 ; XZ plane
+  G90 ; Absolute Distance
+
+
+  #<start_x> = #<_x> ; starting X
+  #<start_z> = #<_z> ; starting Z
+  #<end_z> = #5
+
+  G96 D1200 S#2 ; Constant Surface Speed Mode
+  M3
+  G96 D1200 S#2 ; Constant Surface Speed Mode
+  M3 ; repeat because G96 bug
+
+
+  ; thread truncation
+  G95 F#<feed> ; Feed-Per-Rev Mode
+  o51 IF [#6 GT 0.5] ; internal
+    G0 X[[#1/2] + #<allowance>]
+    G1 Z #5
+    G1 X[#1/2]
+    G0 Z[#<start_z>]
+    G1 X[[#1/2] - #<ioffset>]
+  o51 ELSE ; external
+    G0 X[[#1/2] - #<allowance>]
+    G1 Z #5
+    G1 X[#1/2]
+    G0 Z[#<start_z>]
+    G1 X[[#1/2] + #<ioffset>]
+  o51 ENDIF
+    
+  ; thread
+  G96 D200 S#2 ; Constant Surface Speed Mode with 200RPM limit
+  M3
+  G96 D200 S#2 ; Constant Surface Speed Mode with 200RPM limit
+  M3
+
+  (debug, G76 P#<P> Z#5 I#<I> J#<J> K#<K> H#<spring> R#<R> Q#<Q> E#<K> L2)
+  G76 P#<P> Z#5 I#<I> J#<J> K#<K> H#<spring> R#<R> Q#<Q> E#<K> L2
+  G0 Z #<start_z>
+  G0 X #<start_x>
+  m5
+O<mythreading> endsub
+
+
+M2

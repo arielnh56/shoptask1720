@@ -1,0 +1,2 @@
+31 = hard max rpm
+32 = soft max rpm

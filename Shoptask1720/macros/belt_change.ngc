@@ -1,0 +1,11 @@
+o<belt_change> sub
+M73 ; save state
+G97 S#31 ; set speed to spindle max rpm
+M3 ; stat spindle
+G4 P5 ; wait 5 seconds
+M66 E0 L0 ; analog 0 is wired to abs rpm
+#32 = #5399
+(debug, soft max rpm set to #32)
+M5
+o<belt_change> endsub
+M2
