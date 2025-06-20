@@ -85,9 +85,9 @@ O<mythreading> sub
   #<start_z> = #<_z> ; starting Z
   #<end_z> = #5
 
-  G96 D1200 S#2 ; Constant Surface Speed Mode
+  G96 D#32 S#2 ; Constant Surface Speed Mode
   M3
-  G96 D1200 S#2 ; Constant Surface Speed Mode
+  G96 D#32 S#2 ; Constant Surface Speed Mode
   M3 ; repeat because G96 bug
 
 

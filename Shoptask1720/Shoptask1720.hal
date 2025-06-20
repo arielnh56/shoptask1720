@@ -307,7 +307,7 @@ setp hm2_7i76e.0.encoder.04.scale -1200
 net spindle-speed hm2_7i76e.0.encoder.04.velocity => lowpass.spindle-speed.in
 net spindle-speed-filtered lowpass.spindle-speed.out => spindle.0.speed-in scale.spindle-speed.in
 net spindle-speed-rpm scale.spindle-speed.out => abs.spindle-speed.in
-net spindle-speed-abs abs.spindle-speed.out => pid.s.feedback
+net spindle-speed-abs abs.spindle-speed.out => pid.s.feedback motion.analog-in-00
 net spindle-cmd spindle.0.speed-out-rps => near.spindle-speed.in1
 net spindle-speed-filtered => near.spindle-speed.in2
 net spindle-at-speed spindle.0.at-speed <= near.spindle-speed.out
