@@ -43,7 +43,7 @@ addf lowpass.spindle-speed servo-thread
 addf scale.spindle-speed servo-thread
 addf near.spindle-speed servo-thread
 setp scale.spindle-speed.gain 60.0
-setp near.spindle-speed.scale 1.01
+setp near.spindle-speed.scale 1.05
 setp hm2_7i76e.0.dpll.01.timer-us -50
 setp hm2_7i76e.0.stepgen.timer-number 1
 

@@ -5,8 +5,8 @@
 [vars]
 [widgets]
 	thread.cycle = False
-	turn.sf = 45.0
-	thread.pitch = 16.0
+	turn.sf = 20.0
+	thread.pitch = 18.0
 	turn.tool = 8.0
 	turn.angle = 0.0
 	chamfer.bo = False
@@ -17,14 +17,14 @@
 	radius.bo = False
 	chamfer.fi = False
 	chamfer.size = 0.062
-	thread.x = 0.375
+	thread.x = 0.312
 	radius.sf = 0.0
 	chamfer.fo = True
 	thread.whitworth = False
 	bore.feed = 0.0
 	thread.internal = False
 	bore.tool = 0.0
-	thread.sf = 45.0
+	thread.sf = 20.0
 	turn.rad = 0.0
 	bore.sf = 0.0
 	turn.x = 15.0
@@ -41,11 +41,11 @@
 	thread.metric = False
 	turn.feed = 0.0
 	bore.x = 0.0
-	thread.z = -0.5
+	thread.z = -1.5
 	face.angle = 0.0
 	face.sf = 0.0
 	radius.tool = 0.0
-	thread.allowance = 0.375
+	thread.allowance = 0.0011
 	bore.cut = 0.0
 	thread.unified = True
 	chamfer.x = 0.375
@@ -55,4 +55,4 @@
 	bore.rad = 0.0
 	thread.external = True
 	radius.fi = True
-# last update  by gladevcp.persistence.save_state() on Thu Jun 19 19:30:00 2025 
+# last update  by gladevcp.persistence.save_state() on Sun Aug 17 15:50:42 2025 
