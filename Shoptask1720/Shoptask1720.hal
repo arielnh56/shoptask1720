@@ -317,7 +317,7 @@ net coolant-flood     <=  iocontrol.0.coolant-flood
 
 #  ---probe signal---
 
-net probe-in  hm2_7i76e.0.7i76.0.0.input-10   =>  motion.probe-input
+net probe-in =>  motion.probe-input
 
 #  ---motion control signals---
 
@@ -338,10 +338,10 @@ net machine-is-disabled <= not.machine-is-enabled.out
 #  ---manual tool change signals---
 
 loadusr -W hal_manualtoolchange
-#net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
-#net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
-#net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
-#net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+net tool-change-request     iocontrol.0.tool-change       =>  hal_manualtoolchange.change
+net tool-change-confirmed   iocontrol.0.tool-changed      <=  hal_manualtoolchange.changed
+net tool-number             iocontrol.0.tool-prep-number  =>  hal_manualtoolchange.number
+net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
 
 # spindle control
 net spindle-is-on halui.spindle.0.is-on hm2_7i76e.0.7i76.0.0.output-00 # start relay NO
